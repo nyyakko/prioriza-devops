@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prioriza-com
+  namespace: prioriza
+  labels:
+    app: prioriza
+spec:
+  rules:
+    - host: 'api.prioriza.com'
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: stock-api-service
+                port:
+                  name: http
+            pathType: Prefix

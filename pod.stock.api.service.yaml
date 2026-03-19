@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stock-api-service
+  namespace: prioriza
+  labels:
+    app: prioriza
+    kind: api
+spec:
+  initContainers:
+    - name: wait-for-redis
+      image: busybox
+      command:
+        - sh
+        - -c
+        - |
+          until nslookup db-redis-service.prioriza.svc.cluster.local > /dev/null; do
+            echo waiting for redis...
+            sleep 2
+          done
+    - name: wait-for-rabbit
+      image: busybox
+      command:
+        - sh
+        - -c
+        - |
+          until nslookup db-redis-service.prioriza.svc.cluster.local > /dev/null; do
+            echo waiting for redis...
+            sleep 2
+          done
+  containers:
+    - name: api
+      image: nyyakko/prioriza-stock-api-service:latest
+      env:
+        - name: SERVICE_PORT
+          value: "80"
+      ports:
+        - name: http
+          containerPort: 80
+      envFrom:
+        - configMapRef:
+            name: back-configuration
+            optional: false
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: http
+        periodSeconds: 5
+        failureThreshold: 3
+        timeoutSeconds: 2
