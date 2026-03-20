@@ -6,6 +6,7 @@ metadata:
   labels:
     app: prioriza
 spec:
+  ingressClassName: nginx
   rules:
     - host: 'api.prioriza.com'
       http:
