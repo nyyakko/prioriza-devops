@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-redis-service
+  namespace: prioriza
+  labels:
+    app: prioriza
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prioriza
+      kind: db
+  template:
+    metadata:
+      labels:
+        app: prioriza
+        kind: db
+    spec:
+      containers:
+        - name: redis
+          image: redis:8.6.1-alpine
+          env:
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: back-configuration
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: back-configuration
+                  key: REDIS_PORT
+          ports:
+            - name: http
+              containerPort: 6379
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - redis-cli ping
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 2
