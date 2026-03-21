@@ -25,7 +25,7 @@ spec:
         - -c
         - |
           until nslookup db-redis-service.prioriza.svc.cluster.local > /dev/null; do
-            echo waiting for redis...
+            echo waiting for rabbit...
             sleep 2
           done
   containers:
