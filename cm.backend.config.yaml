@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backend-configuration
+  name: backend-config
   namespace: prioriza
   labels:
     app: prioriza

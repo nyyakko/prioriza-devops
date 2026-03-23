@@ -23,6 +23,6 @@ spec:
           image: nyyakko/prioriza-stock-worker-service:latest
           envFrom:
             - configMapRef:
-                name: back-configuration
+                name: backend-config
                 optional: false
 status: {}

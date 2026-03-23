@@ -27,12 +27,12 @@ spec:
             - name: RABBIT_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: back-configuration
+                  name: backend-config
                   key: RABBIT_HOST
             - name: RABBIT_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: back-configuration
+                  name: backend-config
                   key: RABBIT_PORT
           livenessProbe:
             exec:
