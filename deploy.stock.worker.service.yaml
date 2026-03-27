@@ -18,6 +18,27 @@ spec:
         app: prioriza
         kind: worker
     spec:
+      initContainers:
+        - name: wait-for-redis
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nslookup db-redis-service.prioriza.svc.cluster.local > /dev/null; do
+                echo waiting for redis...
+                sleep 2
+              done
+        - name: wait-for-rabbit
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nslookup mq-rabbit-service.prioriza.svc.cluster.local > /dev/null; do
+                echo waiting for rabbit...
+                sleep 2
+              done
       containers:
         - name: worker
           image: nyyakko/prioriza-stock-worker-service:latest
